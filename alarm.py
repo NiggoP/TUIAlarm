@@ -2,8 +2,9 @@
 
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal, Vertical
-from textual.widgets import Button, Static
+from textual.widgets import Button, Static, Footer
 from textual.reactive import reactive
+from textual.binding import Binding
 import myNumbers
 
 import subprocess
@@ -55,6 +56,16 @@ class Number(Static):
 class TUIAlarmApp(App):
     CSS_PATH = "style.css"
 
+    BINDINGS = [
+        Binding(key="q", action="quit", description="Quit the app"),
+        Binding(
+            key="z",
+            action="sleep",
+            description="Sleep",
+        ),
+        Binding(key="s", action="stop", description="Stop Alarm"),
+    ]
+
     def compose(self) -> ComposeResult:
         yield Horizontal(
             Vertical(
@@ -89,24 +100,31 @@ class TUIAlarmApp(App):
                 Button(myNumbers.sleepSymbol, id="sleep"),
                 id="btn-seg"
             ),
+            Footer()
         )
+
+    def action_sleep(self) -> None:
+        timeToSleep = 0
+        currtime = str(datetime.datetime.now().time()).split(":")[:2]
+        #currtime = ['hours', 'minutes']
+        curr_minutes = int(currtime[0])*60 + int(currtime[1])
+
+        minutes_set = (self.query_one("#hourFirst_Number").value * 10 + self.query_one("#hourSecond_Number").value)*60 + self.query_one("#minuteFirst_Number").value * 10 + self.query_one("#minuteSecond_Number").value
+        if curr_minutes < minutes_set:
+            timeToSleep = minutes_set - curr_minutes
+        else:
+            timeToSleep = minutes_set + 1440-curr_minutes
+        
+        subprocess.Popen(['./wakeupCommand.sh', str(timeToSleep*60)])
+
+    def action_stop(self) -> None:
+        subprocess.Popen('./stopCommand.sh')
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "sleep":
-            timeToSleep = 0
-            currtime = str(datetime.datetime.now().time()).split(":")[:2]
-            #currtime = ['hours', 'minutes']
-            curr_minutes = int(currtime[0])*60 + int(currtime[1])
-
-            minutes_set = (self.query_one("#hourFirst_Number").value * 10 + self.query_one("#hourSecond_Number").value)*60 + self.query_one("#minuteFirst_Number").value * 10 + self.query_one("#minuteSecond_Number").value
-            if curr_minutes < minutes_set:
-                timeToSleep = minutes_set - curr_minutes
-            else:
-                timeToSleep = minutes_set + 1440-curr_minutes
-            
-            subprocess.Popen(['./wakeupCommand.sh', str(timeToSleep*60)])
+            self.action_sleep()
         elif event.button.id == "stop":
-            subprocess.Popen('./stopCommand.sh')
+            self.action_stop()
         elif event.button.id == "hourFirst_increase":
             self.query_one("#hourFirst_Number").increase()
         elif event.button.id == "hourSecond_increase":
@@ -130,4 +148,4 @@ class TUIAlarmApp(App):
 if __name__ == "__main__":
     app = TUIAlarmApp()
     sys.stdout.write("\x1b]2;TUIAlarm\x07")
-    print(app.run())
+    app.run()
