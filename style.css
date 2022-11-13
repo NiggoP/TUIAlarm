@@ -1,0 +1,55 @@
+Button {
+    height: 1fr;
+    width: 1fr;
+    background: rgba(0,0,0,0);
+    border: ascii;
+    text-align: center;
+}
+
+Button:focus {
+    text-style: bold;
+}
+
+#stop {
+    border: ascii firebrick;
+    color: firebrick;
+}
+
+#sleep {
+    border: ascii lawngreen;
+    color: lawngreen;
+}
+
+#time-seg {
+    width: 3fr;
+}
+
+#time-mod {
+    margin: 2 1;
+}
+
+#time-mod > * {
+    width: 2fr;
+}
+
+Number {
+    min-width: 21;
+    content-align: center top;
+}
+
+#doubleDot {
+    width: 1fr;
+    content-align: center top;
+}
+
+#btn-seg {
+    width: 1fr;
+    margin: 2 0;
+}
+
+.header {
+    margin: 1 0 0 2;
+    text-style: bold;
+}
+
+
