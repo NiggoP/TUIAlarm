@@ -23,3 +23,5 @@ To start the application simply use:
 ```
 ./alarm.py
 ```
+
+![image](https://user-images.githubusercontent.com/43621370/201540112-fca90f1a-0215-407d-8b0c-091c12be63e7.png)
