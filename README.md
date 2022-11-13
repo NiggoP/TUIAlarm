@@ -1,11 +1,13 @@
 # TUIAlarm
-A TUI to create an alarm that suspends your machine and wakes you with an audio file
+A TUI to create an alarm that suspends your machine and wakes you with an audio file.
 
 
 ## Introduction
 This application uses textual to create a TUI which sole purpose is to start a bash script with the correct attribute (duration of suspension).
 To suspend the machine rtcwake is used.
-It is totally possible to modify the executed scripts to one's own needs. The scripts in this repo shall mainly serve as examples
+It is totally possible to modify the executed scripts to one's own needs. The scripts in this repo shall mainly serve as examples.
+
+This has been tested on Ubuntu 20.04.4 LTS
 
 ## Requirements
 The only requirement at this point is textual==0.4.0  
